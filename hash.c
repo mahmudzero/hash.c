@@ -17,6 +17,7 @@ struct Hash {
 
 void *get (char key[ARRAY_MAX_LEN], struct Hash *self) {
 	for (unsigned int i = 0; i < ARRAY_MAX_LEN; i++) {
+		if (*self->keys[i] == '\0') return NULL;
 		if (strncmp(self->keys[i], key, KEY_NAME_MAX_LEN) == 0) {
 			return self->vals[i];
 		}
@@ -65,7 +66,7 @@ int main () {
 	char *name = "Mahmud";
 	foo.set("name", "string", (void *)name, &foo);
 
-	printf("foo['name'] = ");
+	printf("foo['name'] = %s", (char *)foo.get("name", &foo));
 	char *read_name = foo.get("name", &foo);
 	int i = 0;
 	while (*(read_name + i) != '\0') {
@@ -73,7 +74,7 @@ int main () {
 		i = i + 1;
 	}
 
-	printf("\n");
+	printf("\nfoo['bar'] = %s\n", ((char *)foo.get("bar", &foo)));
 
 	return 0;
 }
